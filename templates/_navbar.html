@@ -1,0 +1,14 @@
+<nav style="background:#0f172a;color:#fff;padding:10px 14px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+  <div style="font-weight:600;margin-right:12px;">Inventário de Cartões</div>
+  <a href="{{ url_for('dashboard') }}" style="color:#fff;text-decoration:none;padding:6px 8px;{{ 'background:#334155;border-radius:4px;' if request.path=='/' else '' }}">Dashboard</a>
+  <a href="{{ url_for('inventario') }}" style="color:#fff;text-decoration:none;padding:6px 8px;{{ 'background:#334155;border-radius:4px;' if request.path.startswith('/inventario') else '' }}">Inventário</a>
+  <a href="{{ url_for('cadastro_cartoes') }}" style="color:#fff;text-decoration:none;padding:6px 8px;{{ 'background:#334155;border-radius:4px;' if request.path.startswith('/cadastro-cartoes') else '' }}">Cadastro de Cartões</a>
+  <a href="{{ url_for('historico') }}" style="color:#fff;text-decoration:none;padding:6px 8px;{{ 'background:#334155;border-radius:4px;' if request.path.startswith('/historico') else '' }}">Histórico</a>
+  {% if current_user.nivel == 'Admin' %}
+  <a href="{{ url_for('gestao_usuarios') }}" style="color:#fff;text-decoration:none;padding:6px 8px;{{ 'background:#334155;border-radius:4px;' if request.path.startswith('/gestao-usuarios') else '' }}">Gestão de Usuários</a>
+  {% endif %}
+  <span style="flex:1"></span>
+  <a href="{{ url_for('alterar_senha') }}" style="color:#fff;text-decoration:none;padding:6px 8px;">Alterar Senha</a>
+  <span style="opacity:.85;font-size:.9rem;margin-right:8px;">Planta: <strong>{{ session.get('planta') }}</strong> · Usuário: <strong>{{ current_user.nome }}</strong> ({{ current_user.nivel }})</span>
+  <a href="{{ url_for('logout') }}" style="color:#fff;text-decoration:none;padding:6px 8px;background:#7f1d1d;border-radius:4px;">Sair</a>
+</nav>
