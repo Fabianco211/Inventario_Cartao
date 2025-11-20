@@ -494,4 +494,4 @@ def alterar_senha():
     return render_template('alterar_senha.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
