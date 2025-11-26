@@ -28,7 +28,7 @@ class Inventario(db.Model):
     data_inicio = db.Column(db.String(50))
     data_fim = db.Column(db.String(50))
 
-class Usuario(db.Model):
+class Usuario(db.Model, UserMixin):
     __tablename__ = 'usuarios'
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
@@ -36,7 +36,6 @@ class Usuario(db.Model):
     nivel = db.Column(db.String(20), nullable=False)
     planta = db.Column(db.String(10), nullable=False)
     must_change = db.Column(db.Boolean, default=False)
-
 
 class Cartao(db.Model):
     id = db.Column(db.Integer, primary_key=True)
