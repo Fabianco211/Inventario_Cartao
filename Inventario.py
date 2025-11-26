@@ -29,12 +29,14 @@ class Inventario(db.Model):
     data_fim = db.Column(db.String(50))
 
 class Usuario(db.Model):
+    __tablename__ = 'usuarios'
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
     senha = db.Column(db.String(200), nullable=False)
-    nivel = db.Column(db.String(50))
-    planta = db.Column(db.String(50))
-    must_change = db.Column(db.Integer, default=0)
+    nivel = db.Column(db.String(20), nullable=False)
+    planta = db.Column(db.String(10), nullable=False)
+    must_change = db.Column(db.Boolean, default=False)
+
 
 class Cartao(db.Model):
     id = db.Column(db.Integer, primary_key=True)
