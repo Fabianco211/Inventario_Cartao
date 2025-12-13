@@ -336,16 +336,25 @@ def cadastro_cartoes():
             return redirect(url_for('cadastro_cartoes'))
 
         # Excluir
+        # Excluir (TRECHO NOVO - Corrigido)
         elif 'excluir' in request.form:
             if current_user.nivel != 'Admin':
                 flash('Ação não permitida: apenas Admin pode excluir cartões.')
             else:
                 id_cartao = request.form['excluir']
                 cartao = Cartao.query.get(id_cartao)
+                
                 if cartao:
+                    # 1. Primeiro, deletamos todo o histórico associado a este cartão
+                    HistoricoInventario.query.filter_by(cartao_id=cartao.id).delete()
+                    
+                    # 2. Agora o cartão está livre para ser deletado
                     db.session.delete(cartao)
                     db.session.commit()
-                    flash('Cartão excluído com sucesso!')
+                    flash('Cartão e seu histórico foram excluídos com sucesso!')
+                else:
+                    flash('Cartão não encontrado.')
+                    
             return redirect(url_for('cadastro_cartoes'))
 
     # GET
