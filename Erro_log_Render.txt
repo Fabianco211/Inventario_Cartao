@@ -1,0 +1,41 @@
+     ==> Deploying...
+     ==> Your service is live 🎉
+     ==> 
+     ==> ///////////////////////////////////////////////////////////
+     ==> 
+     ==> Available at your primary URL https://inventario-cartao.onrender.com
+     ==> 
+     ==> ///////////////////////////////////////////////////////////
+[2025-11-26 13:28:05 +0000] [56] [INFO] Handling signal: term
+[2025-11-26 13:28:05 +0000] [64] [INFO] Worker exiting (pid: 64)
+[2025-11-26 13:28:08 +0000] [56] [INFO] Shutting down: Master
+  File "/opt/render/project/src/Inventario.py", line 122, in login
+    login_user(user)
+    ~~~~~~~~~~^^^^^^
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/flask_login/utils.py", line 180, in login_user
+    if not force and not user.is_active:
+                         ^^^^^^^^^^^^^^
+AttributeError: 'Usuario' object has no attribute 'is_active'
+127.0.0.1 - - [26/Nov/2025:13:28:51 +0000] "POST /login?next=%2F HTTP/1.1" 500 265 "https://inventario-cartao.onrender.com/login?next=%2F" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0"
+127.0.0.1 - - [26/Nov/2025:13:30:04 +0000] "GET / HTTP/1.1" 302 217 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0"
+127.0.0.1 - - [26/Nov/2025:13:30:05 +0000] "GET /login?next=%2F HTTP/1.1" 200 1259 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0"
+127.0.0.1 - - [26/Nov/2025:13:30:06 +0000] "GET /static/css/style.css HTTP/1.1" 304 0 "https://inventario-cartao.onrender.com/login?next=%2F" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0"
+[2025-11-26 13:30:20,356] ERROR in app: Exception on /login [POST]
+Traceback (most recent call last):
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/opt/render/project/src/Inventario.py", line 122, in login
+    login_user(user)
+    ~~~~~~~~~~^^^^^^
+  File "/opt/render/project/src/.venv/lib/python3.13/site-packages/flask_login/utils.py", line 180, in login_user
+    if not force and not user.is_active:
+                         ^^^^^^^^^^^^^^
+AttributeError: 'Usuario' object has no attribute 'is_active'
+127.0.0.1 - - [26/Nov/2025:13:30:20 +0000] "POST /login?next=%2F HTTP/1.1" 500 265 "https://inventario-cartao.onrender.com/login?next=%2F" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0"

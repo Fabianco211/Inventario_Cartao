@@ -1,5 +1,6 @@
 Flask
 Flask-Login
+<<<<<<< HEAD
 Flask-SQLAlchemy
 Flask-Migrate
 gunicorn
@@ -7,3 +8,11 @@ psycopg2-binary
 pandas
 openpyxl
 werkzeug
+=======
+flask_sqlalchemy
+Flask-Migrate
+psycopg2-binary
+pandas
+openpyxl
+gunicorn
+>>>>>>> 72de554 (Adiciona pasta migrations e ajustes locais)

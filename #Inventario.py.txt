@@ -1,10 +1,9 @@
+#Inventario.py
 from flask import Flask, render_template, redirect, url_for, request, flash, session, send_file
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
-import click
-from flask.cli import with_appcontext
+from werkzeug.security import generate_password_hash, check_password_hash
 import pandas as pd
 import os
 from datetime import datetime
@@ -18,9 +17,9 @@ app.secret_key = 'supersecretkey'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-
 db = SQLAlchemy(app)
 
+# depois de app = Flask(__name__) e db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
@@ -31,7 +30,7 @@ class Inventario(db.Model):
     data_inicio = db.Column(db.String(50))
     data_fim = db.Column(db.String(50))
 
-class Usuario(db.Model, UserMixin):
+class Usuario(db.Model):
     __tablename__ = 'usuarios'
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
@@ -61,10 +60,9 @@ class HistoricoInventario(db.Model):
     planta = db.Column(db.String(50))
 
 # ---------------- Inicialização do banco ----------------
-
-@app.cli.command("seed-admin")
-@with_appcontext
-def seed_admin():
+with app.app_context():
+    db.create_all()
+    # Seed admin (se não existir)
     if not Usuario.query.filter_by(nome='admin', planta='1412').first():
         admin = Usuario(
             nome='admin',
@@ -75,10 +73,6 @@ def seed_admin():
         )
         db.session.add(admin)
         db.session.commit()
-        print("Admin criado.")
-    else:
-        print("Admin já existe.")
-
 
 
 
@@ -93,7 +87,6 @@ def load_user(user_id):
     return Usuario.query.get(int(user_id))
 
 # ---------------- Rotas ----------------
-# ---------------- Auth routes ----------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -282,7 +275,6 @@ def inventario():
             inventario_ativo.status = "Finalizado"
             inventario_ativo.data_fim = agora
             db.session.commit()
-
             flash(f'Inventário finalizado! {len(faltantes)} cartão(ões) marcado(s) como "Não encontrado".')
             return redirect(url_for('dashboard'))
 
@@ -344,25 +336,16 @@ def cadastro_cartoes():
             return redirect(url_for('cadastro_cartoes'))
 
         # Excluir
-        # Excluir (TRECHO NOVO - Corrigido)
         elif 'excluir' in request.form:
             if current_user.nivel != 'Admin':
                 flash('Ação não permitida: apenas Admin pode excluir cartões.')
             else:
                 id_cartao = request.form['excluir']
                 cartao = Cartao.query.get(id_cartao)
-                
                 if cartao:
-                    # 1. Primeiro, deletamos todo o histórico associado a este cartão
-                    HistoricoInventario.query.filter_by(cartao_id=cartao.id).delete()
-                    
-                    # 2. Agora o cartão está livre para ser deletado
                     db.session.delete(cartao)
                     db.session.commit()
-                    flash('Cartão e seu histórico foram excluídos com sucesso!')
-                else:
-                    flash('Cartão não encontrado.')
-                    
+                    flash('Cartão excluído com sucesso!')
             return redirect(url_for('cadastro_cartoes'))
 
     # GET
@@ -578,7 +561,3 @@ def alterar_senha():
 
 if __name__ == '__main__':
     app.run()
-<<<<<<< HEAD
-=======
-    
->>>>>>> 72de554 (Adiciona pasta migrations e ajustes locais)
