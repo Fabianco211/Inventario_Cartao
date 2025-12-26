@@ -3,6 +3,8 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_migrate import Migrate
+import click
+from flask.cli import with_appcontext
 import pandas as pd
 import os
 from datetime import datetime
@@ -58,9 +60,10 @@ class HistoricoInventario(db.Model):
     planta = db.Column(db.String(50))
 
 # ---------------- Inicialização do banco ----------------
-with app.app_context():
-    db.create_all()
-    # Seed admin (se não existir)
+
+@app.cli.command("seed-admin")
+@with_appcontext
+def seed_admin():
     if not Usuario.query.filter_by(nome='admin', planta='1412').first():
         admin = Usuario(
             nome='admin',
@@ -71,6 +74,10 @@ with app.app_context():
         )
         db.session.add(admin)
         db.session.commit()
+        print("Admin criado.")
+    else:
+        print("Admin já existe.")
+
 
 
 
