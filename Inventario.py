@@ -14,9 +14,27 @@ from io import BytesIO
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
 
-# Configuração do banco PostgreSQL via variável de ambiente
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER', '/tmp')
+
+# Configuração robusta da URL do banco (Supabase/Render)
+db_url = os.getenv("DATABASE_URL")
+if not db_url:
+    raise RuntimeError("DATABASE_URL não definida")
+
+# ⚠️ Atenção: no seu snippet veio "&amp;". No código Python use "&" normal.
+# Garante SSL se ainda não estiver na URL
+if "postgresql" in db_url and "sslmode=" not in db_url:
+    db_url += "&sslmode=require" if "?" in db_url else "?sslmode=require"
+
+app.config["SQLALCHEMY_DATABASE_URI"] = db_url
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "pool_pre_ping": True,   # evita conexões zumbis em produção
+    "pool_recycle": 1800,    # recicla a conexão a cada 30 min
+    "pool_size": 5,          # tamanho do pool
+    "max_overflow": 10,      # conexões extras acima do pool
+
 
 db = SQLAlchemy(app)
 
