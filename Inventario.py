@@ -593,7 +593,3 @@ def alterar_senha():
 
 if __name__ == '__main__':
     app.run()
-<<<<<<< HEAD
-=======
-    
->>>>>>> 72de554 (Adiciona pasta migrations e ajustes locais)
